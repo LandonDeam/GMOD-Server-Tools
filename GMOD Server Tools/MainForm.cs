@@ -130,8 +130,9 @@ namespace GMOD_Server_Tools
                 {
                     filePath = Enumerable.ElementAt(_ofd.FileNames, i);
                     if (_servers.Select(m => m.Path).Contains(filePath)) continue;
-                    _servers.Add(new Server(filePath));
-                    lstServers.Items.Add(filePath);
+                    Server newServer = new Server(filePath);
+                    _servers.Add(newServer);
+                    lstServers.Items.Add(newServer);
                 }
             }
             WriteServers();

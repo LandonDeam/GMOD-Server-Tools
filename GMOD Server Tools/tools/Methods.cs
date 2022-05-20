@@ -89,7 +89,7 @@ namespace GMOD_Server_Tools.tools
 
         public static object ReadFromBin(string path)
         {
-            FileStream fs = null;
+            FileStream fs = default(FileStream);
             try
             {
                 fs = GetFs(path);
@@ -115,7 +115,7 @@ namespace GMOD_Server_Tools.tools
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Exception while closing file stream: " + ex.Message);
+                    Console.WriteLine("Exception while closing file stream");
                 }
             }
             return null;

@@ -12,7 +12,7 @@ namespace GMOD_Server_Tools.tools
         {
             Regex regex = new Regex("(progress: )(?<progress>[0-9]{1,2}.[0-9]{2})", RegexOptions.Compiled);
             string commands = 
-                $"+@ShutdownOnFailedCommand 0 +@NoPromptForPassword 1 +force_install_dir {server} +login anonymous +app_update 4020 validate +quit";
+                $"+@ShutdownOnFailedCommand 0 +@NoPromptForPassword 1 +force_install_dir \"{server}\" +login anonymous +app_update 4020 validate +quit";
             ConsoleApp app = new ConsoleApp(steamcmd, commands);
             
             app.ConsoleOutput += (o, args) =>
