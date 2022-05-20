@@ -1,54 +1,48 @@
 ﻿using Microsoft.WindowsAPICodePack.Dialogs;
-using SlavaGu.ConsoleAppLauncher;
 using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.IO;
-using Steamworks;
-using SteamKit2;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using GMOD_Server_Tools.classes;
 
 namespace GMOD_Server_Tools
 {
-    public partial class frmGMODServerTools : Form
+    public partial class FrmGmodServerTools : Form
     {
 
-        private CommonOpenFileDialog ofd = new CommonOpenFileDialog();
-        private bool validFilePath = false;
-        private delegate void SetControlPropertyThreadSafeDelegate(Control control, string propertyName, object propertyValue);
-        private List<Server> servers;
-        private List<Addon> addons;
+        private CommonOpenFileDialog _ofd = new CommonOpenFileDialog();
+        private bool _validFilePath;
+        private List<Server> _servers;
+        internal List<Addon> Addons;
 
-        public frmGMODServerTools()
+        public FrmGmodServerTools()
         {
             InitializeComponent();
             statusStrip.Visible = false;
-            loadPathsFromFile();
+            LoadPathsFromFile();
         }
 
-        private void loadPathsFromFile()
+        private void LoadPathsFromFile()
         {
-            servers = (List<Server>)Methods.readFromBin($"{Directory.GetCurrentDirectory()}\\bin\\servers.bin");
-            if (servers != null)
-                foreach (Server server in servers)
+            _servers = (List<Server>)Methods.ReadFromBin($"{Directory.GetCurrentDirectory()}\\bin\\servers.bin");
+            if (_servers != null)
+                foreach (Server server in _servers)
                     lstServers.Items.Add(server);
-            addons = (List<Addon>)Methods.readFromBin($"{Directory.GetCurrentDirectory()}\\bin\\addons.bin");
-            if (addons != null)
-                foreach (Addon addon in addons)
+            Addons = (List<Addon>)Methods.ReadFromBin($"{Directory.GetCurrentDirectory()}\\bin\\addons.bin");
+            if (Addons != null)
+                foreach (Addon addon in Addons)
                     lstAddons.Items.Add(addon);
         }
 
-        private void writeServers()
+        private void WriteServers()
         {
-            Methods.WriteToBin(servers, $"{Directory.GetCurrentDirectory()}\\bin", "servers.bin");
+            Methods.WriteToBin(_servers, $"{Directory.GetCurrentDirectory()}\\bin", "servers.bin");
         }
 
-        private void writeAddons()
+        private void WriteAddons()
         {
-            Methods.WriteToBin(addons, $"{Directory.GetCurrentDirectory()}\\bin", "addons.bin");
+            Methods.WriteToBin(Addons, $"{Directory.GetCurrentDirectory()}\\bin", "addons.bin");
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
@@ -58,25 +52,25 @@ namespace GMOD_Server_Tools
 
         private void btnGetDirectory_Click(object sender, EventArgs e)
         {
-            ofd.IsFolderPicker = true;
-            ofd.Multiselect = true;
+            _ofd.IsFolderPicker = true;
+            _ofd.Multiselect = true;
             errorProvider.Clear();
-            ofd.ShowDialog();
+            _ofd.ShowDialog();
             try
             {
                 txtServerFolders.Text = "";
-                foreach (string filePath in ofd.FileNames)
+                foreach (string filePath in _ofd.FileNames)
                 {
                     if (!Directory.Exists(filePath))
                     {
                         txtServerFolders.Text = "";
                         errorProvider.SetError(btnGetDirectory, "ERROR: One or more directory added does not exist!");
-                        validFilePath = false;
+                        _validFilePath = false;
                         return;
                     }
-                    txtServerFolders.Text += $"\"{filePath}\" ";
+                    txtServerFolders.Text += $@"""{filePath}"" ";
                 }
-                validFilePath = true;
+                _validFilePath = true;
             }
             catch (Exception ex)
             {
@@ -86,15 +80,15 @@ namespace GMOD_Server_Tools
 
         private void btnAll_Click(object sender, EventArgs e)
         {
-            setAllBoxes(lstServers, true);
+            SetAllBoxes(lstServers, true);
         }
 
         private void btnNone_Click(object sender, EventArgs e)
         {
-            setAllBoxes(lstServers, false);
+            SetAllBoxes(lstServers, false);
         }
 
-        private void setAllBoxes(CheckedListBox list, bool value)
+        private void SetAllBoxes(CheckedListBox list, bool value)
         {
             for (int i = 0; i < list.Items.Count; i++)
             {
@@ -102,7 +96,7 @@ namespace GMOD_Server_Tools
             }
         }
 
-        private void setAllBoxesInverse(CheckedListBox list)
+        private void SetAllBoxesInverse(CheckedListBox list)
         {
             for (int i = 0; i < list.Items.Count; i++)
             {
@@ -112,55 +106,55 @@ namespace GMOD_Server_Tools
 
         private void btnRemove_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < servers.Count; i++)
+            for (int i = 0; i < _servers.Count; i++)
             {
                 if (lstServers.GetItemChecked(i))
                 {
-                    servers.RemoveAt(i);
+                    _servers.RemoveAt(i);
                     lstServers.Items.RemoveAt(i);
                     i--;
                 }
             }
-            writeServers();
+            WriteServers();
         }
 
         private void btnAddFolder_Click(object sender, EventArgs e)
         {
-            if (servers == null) servers = new List<Server>();
-            if (validFilePath)
+            if (_servers == null) _servers = new List<Server>();
+            if (_validFilePath)
             {
                 txtServerFolders.Text = "";
                 string filePath;
-                for (int i = 0; i < Enumerable.Count(ofd.FileNames); i++)
+                for (int i = 0; i < Enumerable.Count(_ofd.FileNames); i++)
                 {
-                    filePath = Enumerable.ElementAt(ofd.FileNames, i);
-                    if (servers.Select(m => m.Path).Contains(filePath)) continue;
-                    servers.Add(new Server(filePath));
+                    filePath = Enumerable.ElementAt(_ofd.FileNames, i);
+                    if (_servers.Select(m => m.Path).Contains(filePath)) continue;
+                    _servers.Add(new Server(filePath));
                     lstServers.Items.Add(filePath);
                 }
             }
-            writeServers();
+            WriteServers();
         }
 
         private void btnInverse_Click(object sender, EventArgs e)
         {
-            setAllBoxesInverse(lstServers);
+            SetAllBoxesInverse(lstServers);
         }
 
         private void btnGetAddon_Click(object sender, EventArgs e)
         {
-            Addon addon = null;
+            Addon addon;
             try
             {
-                addon = Addon.getAddon(txtAddon.Text);
+                addon = Addon.GetAddon(txtAddon.Text);
                 if (addon == null)
                 {
                     errorProvider.SetError(txtAddon, "ERROR: Addon not found!");
                     return;
                 }
                 errorProvider.Clear();
-                addAddon(addon);
-                writeAddons();
+                AddAddon(addon);
+                WriteAddons();
             }
             catch (Exception ex)
             {
@@ -169,19 +163,19 @@ namespace GMOD_Server_Tools
             }
         }
 
-        private void addAddon(Addon addon)
+        private void AddAddon(Addon addon)
         {
-            if (addons == null) addons = new List<Addon>();
-            if (addons.Select(m => m.ID).Contains(addon.ID)) return;
+            if (Addons == null) Addons = new List<Addon>();
+            if (Addons.Select(m => m.Id).Contains(addon.Id)) return;
             lstAddons.Items.Add(addon);
-            addons.Add(addon);
+            Addons.Add(addon);
             foreach (Addon dependency in addon.Dependencies)
             {
-                addAddon(dependency);
+                AddAddon(dependency);
             }
         }
 
-        private void addonStateChanged(object sender, ItemCheckEventArgs e)
+        private void AddonStateChanged(object sender, ItemCheckEventArgs e)
         {
             errorProvider.Clear();
             Addon[] dependencies = ((Addon)lstAddons.Items[e.Index]).Dependencies;
@@ -189,7 +183,7 @@ namespace GMOD_Server_Tools
             {
                 for (int i = 0; i < lstAddons.Items.Count; i++)
                 {
-                    if (dependencies.Select(m => m.ID).Contains(((Addon)lstAddons.Items[i]).ID))
+                    if (dependencies.Select(m => m.Id).Contains(((Addon)lstAddons.Items[i]).Id))
                     {
                         lstAddons.SetItemChecked(i, true);
                     }
@@ -199,7 +193,7 @@ namespace GMOD_Server_Tools
             {
                 for (int i = 0; i < lstAddons.Items.Count; i++)
                 {
-                    if (((Addon)lstAddons.Items[i]).Dependencies.Select(m => m.ID).Contains(((Addon)lstAddons.Items[e.Index]).ID))
+                    if (((Addon)lstAddons.Items[i]).Dependencies.Select(m => m.Id).Contains(((Addon)lstAddons.Items[e.Index]).Id))
                     {
                         errorProvider.SetError(lstAddons, $"\"{lstAddons.Items[i]}\" requires \"{lstAddons.Items[e.Index]}\" to work");
                         e.NewValue = CheckState.Checked;

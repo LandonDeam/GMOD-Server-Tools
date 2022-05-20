@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GMOD_Server_Tools
 {
@@ -11,29 +7,29 @@ namespace GMOD_Server_Tools
     [Serializable]
     internal class Server
     {
-        private List<Addon> addons;
-        private string name;
-        private string path;
+        private List<Addon> _addons;
+        private string _name;
+        private string _path;
 
         public Server(string path, List<Addon> addons, string name)
         {
-            this.path = path ?? throw new ArgumentNullException(nameof(path));
-            this.addons = addons ?? throw new ArgumentNullException(nameof(addons));
-            this.name = name ?? throw new ArgumentNullException(nameof(name));
+            this._path = path ?? throw new ArgumentNullException(nameof(path));
+            this._addons = addons ?? throw new ArgumentNullException(nameof(addons));
+            this._name = name ?? throw new ArgumentNullException(nameof(name));
         }
 
         public Server(string path, string name)
         {
-            this.path = path ?? throw new ArgumentNullException(nameof(path));
-            this.addons = new List<Addon>();
-            this.name = name ?? throw new ArgumentNullException(nameof(name));
+            this._path = path ?? throw new ArgumentNullException(nameof(path));
+            this._addons = new List<Addon>();
+            this._name = name ?? throw new ArgumentNullException(nameof(name));
         }
 
         public Server(string path)
         {
-            this.path = path ?? throw new ArgumentNullException(nameof(path));
-            this.addons = new List<Addon>();
-            this.name = path.Substring(path.LastIndexOf('\\') + 1);
+            this._path = path ?? throw new ArgumentNullException(nameof(path));
+            this._addons = new List<Addon>();
+            this._name = path.Substring(path.LastIndexOf('\\') + 1);
         }
 
         public Server(Server other)
@@ -45,70 +41,70 @@ namespace GMOD_Server_Tools
 
         public void Copy(Server other)
         {
-            this.name = other.name;
-            this.path = other.path;
-            this.addons = other.addons;
+            this._name = other._name;
+            this._path = other._path;
+            this._addons = other.Addons;
         }
 
-        public void addAddon(Addon addon)
+        public void AddAddon(Addon addon)
         {
-            this.addons.Add(addon);
+            this.Addons.Add(addon);
         }
 
-        public void addAddons(List<Addon> addons)
+        public void AddAddons(List<Addon> addons)
         {
             foreach (Addon addon in addons)
             {
-                this.addons.Add(addon);
+                this.Addons.Add(addon);
             }
         }
 
-        public void removeAddon(Addon addon)
+        public void RemoveAddon(Addon addon)
         {
-            if (this.addons.Contains(addon))
+            if (this.Addons.Contains(addon))
             {
-                this.addons.Remove(addon);
+                this.Addons.Remove(addon);
             }
         }
 
-        public void removeAddons(List<Addon> addons)
+        public void RemoveAddons(List<Addon> addons)
         {
-            if (addons == null) return;
+            if (_addons == null) return;
             for (int i = 0; i < addons.Count; i++)
             {
-                if (this.addons.Contains(addons[i]))
+                if (this.Addons.Contains(addons[i]))
                 {
-                    this.addons.Remove(addons[i]);
+                    this.Addons.Remove(addons[i]);
                 }
             }
         }
 
-        public void removeAllAddons()
+        public void RemoveAllAddons()
         {
-            addons.Clear();
+            Addons.Clear();
         }
 
         public List<Addon> Addons
         {
-            get { return this.addons; }
-            set { this.addons = value; }
+            get { return this.Addons; }
+            set { this._addons = value; }
         }
 
         public string Name
         {
-            get { return this.name; }
-            set { this.name = value; }
+            get { return this._name; }
+            set { this._name = value; }
         }
 
         public string Path
         {
-            get { return this.path; }
-            set { this.path = value; }
+            get { return this._path; }
+            set { this._path = value; }
         }
 
         public override string ToString()
         {
-            return this.path;
+            return this._path;
         }
     }
 }

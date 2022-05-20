@@ -1,6 +1,6 @@
 ﻿namespace GMOD_Server_Tools
 {
-    partial class frmGMODServerTools
+    partial class FrmGmodServerTools
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmGMODServerTools));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmGmodServerTools));
             this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
@@ -139,7 +139,7 @@
             this.lstAddons.Size = new System.Drawing.Size(1140, 229);
             this.lstAddons.Sorted = true;
             this.lstAddons.TabIndex = 43;
-            this.lstAddons.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.addonStateChanged);
+            this.lstAddons.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.AddonStateChanged);
             // 
             // txtAddon
             // 
@@ -285,7 +285,7 @@
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.statusStrip);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "frmGMODServerTools";
+            this.Name = "FrmGmodServerTools";
             this.Text = "Landon\'s GMOD Server Tools";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).EndInit();

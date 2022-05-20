@@ -1,11 +1,7 @@
 ﻿using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -21,19 +17,19 @@ namespace GMOD_Server_Tools
             IProgress<string> stat = new Progress<string>(s => status.Text = s);
             stat.Report("Getting ready...");
             progress.Report(0);
-            string steamcmd = GetSteamCMDPath();
+            string steamcmd = GetSteamCmdPath();
             for(int i = 0; i < listBox.CheckedItems.Count; i++)
             {
                 await Task.Factory.StartNew(() => 
-                Threads.runUpdate((Server)listBox.CheckedItems[i], bar, progress, stat, steamcmd), 
+                Threads.RunUpdate((Server)listBox.CheckedItems[i], bar, progress, stat, steamcmd), 
                 TaskCreationOptions.LongRunning);
             }
         }
 
-        public static string GetSteamCMDPath()
+        public static string GetSteamCmdPath()
         {
             if (File.Exists(Directory.GetCurrentDirectory() + "\\bin\\consolepath.bin"))
-                return (string)readFromBin(Directory.GetCurrentDirectory() + "\\bin\\consolepath.bin");
+                return (string)ReadFromBin(Directory.GetCurrentDirectory() + "\\bin\\consolepath.bin");
             if (File.Exists("C:\\steamcmd\\steamcmd.exe"))
             {
                 WriteToBin("C:\\steamcmd\\steamcmd.exe", Directory.GetCurrentDirectory() + "\\bin\\", "consolepath.bin");
@@ -83,19 +79,19 @@ namespace GMOD_Server_Tools
             return true;
         }
 
-        public static FileStream GetFS(string path)
+        public static FileStream GetFs(string path)
         {
             if (!File.Exists(path))
                 throw new FileNotFoundException("The file does not exist", path);
             return new FileStream(path, FileMode.Open, FileAccess.Read);
         }
 
-        public static object readFromBin(string path)
+        public static object ReadFromBin(string path)
         {
             FileStream fs = null;
             try
             {
-                fs = GetFS(path);
+                fs = GetFs(path);
                 BinaryFormatter bf = new BinaryFormatter();
                 using (fs)
                 {
