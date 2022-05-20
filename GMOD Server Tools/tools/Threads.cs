@@ -1,9 +1,10 @@
-﻿using SlavaGu.ConsoleAppLauncher;
-using System;
+﻿using System;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using GMOD_Server_Tools.classes;
+using SlavaGu.ConsoleAppLauncher;
 
-namespace GMOD_Server_Tools
+namespace GMOD_Server_Tools.tools
 {
     internal class Threads
     {

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Net;
+using System.Text.RegularExpressions;
 
-namespace GMOD_Server_Tools
+namespace GMOD_Server_Tools.classes
 {
     [Serializable]
     internal class Addon

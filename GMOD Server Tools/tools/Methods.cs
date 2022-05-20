@@ -1,11 +1,12 @@
-﻿using Microsoft.WindowsAPICodePack.Dialogs;
-using System;
+﻿using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using GMOD_Server_Tools.classes;
+using Microsoft.WindowsAPICodePack.Dialogs;
 
-namespace GMOD_Server_Tools
+namespace GMOD_Server_Tools.tools
 {
     internal class Methods
     {
