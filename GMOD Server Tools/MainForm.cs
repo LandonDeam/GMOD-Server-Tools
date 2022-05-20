@@ -31,6 +31,7 @@ namespace GMOD_Server_Tools
         private void loadPathsFromFile()
         {
             servers = (List<Server>) Methods.readFromBin($"{Directory.GetCurrentDirectory()}\\bin\\servers.bin");
+            if (servers == null) return;
             foreach(Server server in servers)
             {
                 lstServers.Items.Add(server);
@@ -117,6 +118,7 @@ namespace GMOD_Server_Tools
 
         private void btnAddFolder_Click(object sender, EventArgs e)
         {
+            if (servers == null) servers = new List<Server>();
             if (validFilePath)
             {
                 txtServerFolders.Text = "";
@@ -124,7 +126,7 @@ namespace GMOD_Server_Tools
                 for (int i = 0; i < Enumerable.Count(ofd.FileNames); i++)
                 {
                     filePath = Enumerable.ElementAt(ofd.FileNames, i);
-                    if (servers.ElementAt(i).Path.Equals(filePath)) continue;
+                    if (servers.Select(m => m.Path).Contains(filePath)) continue;
                     servers.Add(new Server(filePath));
                     lstServers.Items.Add(filePath);
                 }

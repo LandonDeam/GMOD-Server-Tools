@@ -68,7 +68,7 @@ namespace GMOD_Server_Tools
             try
             {
                 if (!Directory.Exists(directory)) Directory.CreateDirectory(directory);
-                File.WriteAllBytes($"{directory}\\{fileName}.bin", ToByteArray(data));
+                File.WriteAllBytes($"{directory}\\{fileName}", ToByteArray(data));
             }
             catch (FileNotFoundException ex)
             {

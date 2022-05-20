@@ -11,11 +11,11 @@ namespace GMOD_Server_Tools
     [Serializable]
     internal class Server
     {
-        private List<string> addons;
+        private List<Addon> addons;
         private string name;
         private string path;
 
-        public Server(string path, List<string> addons, string name)
+        public Server(string path, List<Addon> addons, string name)
         {
             this.path = path ?? throw new ArgumentNullException(nameof(path));
             this.addons = addons ?? throw new ArgumentNullException(nameof(addons));
@@ -25,14 +25,14 @@ namespace GMOD_Server_Tools
         public Server(string path, string name)
         {
             this.path = path ?? throw new ArgumentNullException(nameof(path));
-            this.addons = new List<string>();
+            this.addons = new List<Addon>();
             this.name = name ?? throw new ArgumentNullException(nameof(name));
         }
 
         public Server(string path)
         {
             this.path = path ?? throw new ArgumentNullException(nameof(path));
-            this.addons = new List<string>();
+            this.addons = new List<Addon>();
             this.name = path.Substring(path.LastIndexOf('\\') + 1);
         }
 
@@ -50,20 +50,20 @@ namespace GMOD_Server_Tools
             this.addons = other.addons;
         }
 
-        public void addAddon(string addon)
+        public void addAddon(Addon addon)
         {
             this.addons.Add(addon);
         }
 
-        public void addAddons(List<string> addons)
+        public void addAddons(List<Addon> addons)
         {
-            foreach (string addon in addons)
+            foreach (Addon addon in addons)
             {
                 this.addons.Add(addon);
             }
         }
 
-        public void removeAddon(string addon)
+        public void removeAddon(Addon addon)
         {
             if (this.addons.Contains(addon))
             {
@@ -71,11 +71,12 @@ namespace GMOD_Server_Tools
             }
         }
 
-        public void removeAddons(List<string> addons)
+        public void removeAddons(List<Addon> addons)
         {
+            if (addons == null) return;
             for (int i = 0; i < addons.Count; i++)
             {
-                if (addons.Contains(this.addons[i]))
+                if (this.addons.Contains(addons[i]))
                 {
                     this.addons.Remove(addons[i]);
                 }
@@ -84,14 +85,10 @@ namespace GMOD_Server_Tools
 
         public void removeAllAddons()
         {
-            int numAddon = this.addons.Count;
-            for (int i = 0; i < numAddon; i++)
-            {
-                this.addons.RemoveAt(i);
-            }
+            addons.Clear();
         }
 
-        public List<string> Addons
+        public List<Addon> Addons
         {
             get { return this.addons; }
             set { this.addons = value; }

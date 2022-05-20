@@ -10,6 +10,7 @@ using System.Net;
 
 namespace GMOD_Server_Tools
 {
+    [Serializable]
     internal class Addon
     {
         public string Name { get; set; }
