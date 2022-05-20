@@ -20,6 +20,7 @@ namespace GMOD_Server_Tools
         private bool validFilePath = false;
         private delegate void SetControlPropertyThreadSafeDelegate(Control control, string propertyName, object propertyValue);
         private List<Server> servers;
+        private List<Addon> addons;
 
         public frmGMODServerTools()
         {
@@ -30,17 +31,24 @@ namespace GMOD_Server_Tools
 
         private void loadPathsFromFile()
         {
-            servers = (List<Server>) Methods.readFromBin($"{Directory.GetCurrentDirectory()}\\bin\\servers.bin");
-            if (servers == null) return;
-            foreach(Server server in servers)
-            {
-                lstServers.Items.Add(server);
-            }
+            servers = (List<Server>)Methods.readFromBin($"{Directory.GetCurrentDirectory()}\\bin\\servers.bin");
+            if (servers != null)
+                foreach (Server server in servers)
+                    lstServers.Items.Add(server);
+            addons = (List<Addon>)Methods.readFromBin($"{Directory.GetCurrentDirectory()}\\bin\\addons.bin");
+            if (addons != null)
+                foreach (Addon addon in addons)
+                    lstAddons.Items.Add(addon);
         }
 
         private void writeServers()
         {
             Methods.WriteToBin(servers, $"{Directory.GetCurrentDirectory()}\\bin", "servers.bin");
+        }
+
+        private void writeAddons()
+        {
+            Methods.WriteToBin(addons, $"{Directory.GetCurrentDirectory()}\\bin", "addons.bin");
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
@@ -145,18 +153,58 @@ namespace GMOD_Server_Tools
             try
             {
                 addon = Addon.getAddon(txtAddon.Text);
-                if(addon == null)
+                if (addon == null)
                 {
                     errorProvider.SetError(txtAddon, "ERROR: Addon not found!");
                     return;
                 }
                 errorProvider.Clear();
-                lstAddons.Items.Add(addon);
+                addAddon(addon);
+                writeAddons();
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
                 errorProvider.SetError(txtAddon, "ERROR: Addon not found!");
+            }
+        }
+
+        private void addAddon(Addon addon)
+        {
+            if (addons == null) addons = new List<Addon>();
+            if (addons.Select(m => m.ID).Contains(addon.ID)) return;
+            lstAddons.Items.Add(addon);
+            addons.Add(addon);
+            foreach (Addon dependency in addon.Dependencies)
+            {
+                addAddon(dependency);
+            }
+        }
+
+        private void addonStateChanged(object sender, ItemCheckEventArgs e)
+        {
+            errorProvider.Clear();
+            Addon[] dependencies = ((Addon)lstAddons.Items[e.Index]).Dependencies;
+            if (e.NewValue == CheckState.Checked && dependencies != null)
+            {
+                for (int i = 0; i < lstAddons.Items.Count; i++)
+                {
+                    if (dependencies.Select(m => m.ID).Contains(((Addon)lstAddons.Items[i]).ID))
+                    {
+                        lstAddons.SetItemChecked(i, true);
+                    }
+                }
+            }
+            else
+            {
+                for (int i = 0; i < lstAddons.Items.Count; i++)
+                {
+                    if (((Addon)lstAddons.Items[i]).Dependencies.Select(m => m.ID).Contains(((Addon)lstAddons.Items[e.Index]).ID))
+                    {
+                        errorProvider.SetError(lstAddons, $"\"{lstAddons.Items[i]}\" requires \"{lstAddons.Items[e.Index]}\" to work");
+                        e.NewValue = CheckState.Checked;
+                    }
+                }
             }
         }
     }

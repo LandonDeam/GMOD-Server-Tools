@@ -36,6 +36,10 @@
             this.toolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.lblAddons = new System.Windows.Forms.Label();
+            this.lstAddons = new System.Windows.Forms.CheckedListBox();
+            this.txtAddon = new System.Windows.Forms.TextBox();
+            this.btnGetAddon = new System.Windows.Forms.Button();
             this.lstServers = new System.Windows.Forms.CheckedListBox();
             this.txtServerFolders = new System.Windows.Forms.TextBox();
             this.btnUpdateInstall = new System.Windows.Forms.Button();
@@ -47,10 +51,6 @@
             this.btnRemoveFolder = new System.Windows.Forms.Button();
             this.btnNone = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.btnGetAddon = new System.Windows.Forms.Button();
-            this.txtAddon = new System.Windows.Forms.TextBox();
-            this.lstAddons = new System.Windows.Forms.CheckedListBox();
-            this.lblAddons = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             this.statusStrip.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -118,6 +118,48 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Servers";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // lblAddons
+            // 
+            this.lblAddons.AutoSize = true;
+            this.lblAddons.Location = new System.Drawing.Point(8, 281);
+            this.lblAddons.Name = "lblAddons";
+            this.lblAddons.Size = new System.Drawing.Size(43, 13);
+            this.lblAddons.TabIndex = 44;
+            this.lblAddons.Text = "Addons";
+            // 
+            // lstAddons
+            // 
+            this.lstAddons.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lstAddons.FormattingEnabled = true;
+            this.lstAddons.Location = new System.Drawing.Point(8, 302);
+            this.lstAddons.Name = "lstAddons";
+            this.lstAddons.Size = new System.Drawing.Size(1140, 229);
+            this.lstAddons.Sorted = true;
+            this.lstAddons.TabIndex = 43;
+            this.lstAddons.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.addonStateChanged);
+            // 
+            // txtAddon
+            // 
+            this.txtAddon.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtAddon.Location = new System.Drawing.Point(57, 275);
+            this.txtAddon.Name = "txtAddon";
+            this.txtAddon.Size = new System.Drawing.Size(1008, 20);
+            this.txtAddon.TabIndex = 42;
+            // 
+            // btnGetAddon
+            // 
+            this.btnGetAddon.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnGetAddon.Location = new System.Drawing.Point(1063, 274);
+            this.btnGetAddon.Name = "btnGetAddon";
+            this.btnGetAddon.Size = new System.Drawing.Size(97, 22);
+            this.btnGetAddon.TabIndex = 41;
+            this.btnGetAddon.Text = "Get Addon";
+            this.btnGetAddon.UseVisualStyleBackColor = true;
+            this.btnGetAddon.Click += new System.EventHandler(this.btnGetAddon_Click);
             // 
             // lstServers
             // 
@@ -234,47 +276,6 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Settings";
             this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // btnGetAddon
-            // 
-            this.btnGetAddon.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnGetAddon.Location = new System.Drawing.Point(1063, 274);
-            this.btnGetAddon.Name = "btnGetAddon";
-            this.btnGetAddon.Size = new System.Drawing.Size(97, 22);
-            this.btnGetAddon.TabIndex = 41;
-            this.btnGetAddon.Text = "Get Addon";
-            this.btnGetAddon.UseVisualStyleBackColor = true;
-            this.btnGetAddon.Click += new System.EventHandler(this.btnGetAddon_Click);
-            // 
-            // txtAddon
-            // 
-            this.txtAddon.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtAddon.Location = new System.Drawing.Point(57, 275);
-            this.txtAddon.Name = "txtAddon";
-            this.txtAddon.Size = new System.Drawing.Size(1008, 20);
-            this.txtAddon.TabIndex = 42;
-            // 
-            // lstAddons
-            // 
-            this.lstAddons.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lstAddons.FormattingEnabled = true;
-            this.lstAddons.Location = new System.Drawing.Point(8, 306);
-            this.lstAddons.Name = "lstAddons";
-            this.lstAddons.Size = new System.Drawing.Size(1152, 229);
-            this.lstAddons.Sorted = true;
-            this.lstAddons.TabIndex = 43;
-            // 
-            // lblAddons
-            // 
-            this.lblAddons.AutoSize = true;
-            this.lblAddons.Location = new System.Drawing.Point(8, 281);
-            this.lblAddons.Name = "lblAddons";
-            this.lblAddons.Size = new System.Drawing.Size(43, 13);
-            this.lblAddons.TabIndex = 44;
-            this.lblAddons.Text = "Addons";
             // 
             // frmGMODServerTools
             // 

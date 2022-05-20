@@ -118,7 +118,7 @@ namespace GMOD_Server_Tools
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.StackTrace);
+                    Console.WriteLine("Exception while closing file stream: " + ex.Message);
                 }
             }
             return null;
